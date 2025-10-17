@@ -1,12 +1,12 @@
 const express = require("express");
-const db = require("./configs/db");
+const db = require("./src/configs/db");
 const config = require("./src/configs/config");
 
 // Import routes
-const userRoutes = require("./routes/userRoutes");
-const postRoutes = require("./routes/postRoutes");
-const commentRoutes = require("./routes/commentRoutes");
-const likeRoutes = require("./routes/likeRoutes");
+const userRoutes = require("./src/routes/userRoutes");
+const postRoutes = require("./src/routes/postRoutes");
+const commentRoutes = require("./src/routes/commentRoutes");
+const likeRoutes = require("./src/routes/likeRoutes");
 
 const app = express();
 

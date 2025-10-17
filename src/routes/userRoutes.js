@@ -1,15 +1,11 @@
-const express = require('express');
-const {register, login, getAllUsers, deleteUser} = require('../controllers/authController')
+const express = require("express");
 const router = express.Router();
+const userCtrl = require("../controllers/userController");
 
-
-router.post('/',register);
-router.post('/login',login);
-router.get('/allUsers',getAllUsers);
-router.delete("/user/:userId",deleteUser);
-
-router.get('/',(req,res)=>{
-    res.send("Register endpoint is active.")
-})
+router.post("/", userCtrl.createUser);
+router.get("/", userCtrl.getUsers);
+router.get("/:id", userCtrl.getUserById);
+router.put("/:id", userCtrl.updateUser);
+router.delete("/:id", userCtrl.deleteUser);
 
 module.exports = router;
