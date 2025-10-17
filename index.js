@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./configs/db");
-const config = require("./configs/config");
+const config = require("./src/configs/config");
 
 // Import routes
 const userRoutes = require("./routes/userRoutes");
