@@ -23,3 +23,5 @@ db.disconnect=async () => {
         console.error("Errose in Database disconnection!",error)
     }
 }
+
+module.exports = db;
