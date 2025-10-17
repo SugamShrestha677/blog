@@ -1,11 +1,20 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const postCtrl = require("../controllers/postController");
+const postController = require('../controllers/postController');
 
-router.post("/", postCtrl.createPost);
-router.get("/", postCtrl.getPosts);
-router.get("/:id", postCtrl.getPostById);
-router.put("/:id", postCtrl.updatePost);
-router.delete("/:id", postCtrl.deletePost);
+// Create a new post
+router.post('/', postController.createPost);
+
+// Get all posts
+router.get('/', postController.getAllPosts);
+
+// Get single post by ID
+router.get('/:id', postController.getPostById);
+
+// Update a post
+router.put('/:id', postController.updatePost);
+
+// Delete a post
+router.delete('/:id', postController.deletePost);
 
 module.exports = router;

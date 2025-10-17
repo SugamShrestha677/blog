@@ -1,39 +1,48 @@
-// src/controllers/commentController.js
 const Comment = require('../models/commentModel');
 const Post = require('../models/postModel');
 
+// Add a comment to a post
 exports.addComment = async (req, res) => {
   try {
     const { postId } = req.params;
-    const { content } = req.body;
+    const { user, content } = req.body;
+
     const post = await Post.findById(postId);
-    if (!post) return res.status(404).json({ message: 'Post not found' });
-    const comment = await Comment.create({ post: postId, user: req.user.id, content });
-    res.status(201).json(comment);
-  } catch (err) { res.status(500).json({ message: err.message }); }
+    if (!post) return res.status(404).json({ error: "Post not found" });
+
+    const comment = await Comment.create({
+      post: postId,
+      user,
+      content,
+    });
+
+    res.status(201).json({ message: "Comment added successfully", comment });
+  } catch (error) {
+    console.error("Error adding comment", error);
+    res.status(500).json({ error: "Server error" });
+  }
 };
 
+// Update comment
 exports.updateComment = async (req, res) => {
   try {
-    const comment = await Comment.findById(req.params.id);
-    if (!comment) return res.status(404).json({ message: 'Comment not found' });
-    if (comment.user.toString() !== req.user.id) return res.status(403).json({ message: 'Forbidden' });
-    comment.content = req.body.content || comment.content;
-    await comment.save();
-    res.json(comment);
-  } catch (err) { res.status(500).json({ message: err.message }); }
+    const comment = await Comment.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!comment) return res.status(404).json({ error: "Comment not found" });
+    res.status(200).json({ message: "Comment updated successfully", comment });
+  } catch (error) {
+    console.error("Error updating comment", error);
+    res.status(500).json({ error: "Server error" });
+  }
 };
 
+// Delete comment
 exports.deleteComment = async (req, res) => {
   try {
-    const comment = await Comment.findById(req.params.id);
-    if (!comment) return res.status(404).json({ message: 'Comment not found' });
-    // allow comment owner or post owner to delete
-    const post = await Post.findById(comment.post);
-    if (comment.user.toString() !== req.user.id && post.author.toString() !== req.user.id) {
-      return res.status(403).json({ message: 'Forbidden' });
-    }
-    await comment.remove();
-    res.json({ message: 'Comment deleted' });
-  } catch (err) { res.status(500).json({ message: err.message }); }
+    const comment = await Comment.findByIdAndDelete(req.params.id);
+    if (!comment) return res.status(404).json({ error: "Comment not found" });
+    res.status(200).json({ message: "Comment deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting comment", error);
+    res.status(500).json({ error: "Server error" });
+  }
 };
